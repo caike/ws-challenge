@@ -1,30 +1,45 @@
-import React from 'react'
-import { gql, useQuery} from '@apollo/client'
+import React, { useState } from "react";
 
-const query = gql`
-query {
-  allTodos {
-    id
-    group
-    task
-    dependencies {
-      id
-    }
-    completedAt
-  }
-}
-`
+import "./App.css";
+
+import { useTodosQuery } from "./hooks";
+
+import TaskGroupView from "./components/TaskGroupView";
+import TaskGroupList from "./components/TaskGroupList";
 
 const App = () => {
-  const {data} = useQuery(query)
+  const { data, loading } = useTodosQuery();
+  const [taskGroupView, setTaskGroupView] = useState(null);
 
-  const count = (data && data.allTodos) ? data.allTodos.length : 0
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  const allTodos = (data && data.allTodos) || [];
+  let filteredTodos;
+
+  if (taskGroupView) {
+    filteredTodos = allTodos.filter((t) => t["group"] === taskGroupView);
+  }
+
+  const clearTaskGroupView = () => setTaskGroupView(null);
 
   return (
-    <React.Fragment>
-      <h1>Hello world, you have {count} things to do</h1>
-    </React.Fragment>
-  )
-}
+    <>
+      {taskGroupView ? (
+        <TaskGroupView
+          taskGroupView={taskGroupView}
+          filteredTodos={filteredTodos}
+          clearTaskGroupView={clearTaskGroupView}
+        />
+      ) : (
+        <TaskGroupList
+          allTodos={allTodos}
+          setTaskGroupView={setTaskGroupView}
+        />
+      )}
+    </>
+  );
+};
 
-export default App
+export default App;
