@@ -27,6 +27,14 @@ html, body {
     cursor: pointer;
 }
 
+.is-clickable :hover {
+    color: #999;
+}
+
+.is-locked {
+    cursor: not-allowed;
+}
+
 .title > div {
     margin-left: 10%;
     margin-top: 1%;
@@ -104,4 +112,15 @@ ul li:first-child {
     font-weight: 600;
     color: #ccc;
     text-decoration: line-through;
+}
+
+.wait-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.wait-status svg {
+    margin-left: 10px;
 }

@@ -70,4 +70,12 @@ defmodule Backend.Todo do
 
     Repo.all(query)
   end
+
+  def toggle_task!(id) do
+    get_task!(id)
+    |> Task.create_toggle_changeset()
+    |> Repo.update!()
+  end
+
+  def get_task!(id), do: Repo.get!(Task, id)
 end

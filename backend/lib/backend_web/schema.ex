@@ -29,7 +29,6 @@ defmodule BackendWeb.Schema do
   end
 
   defp toggle_todo(_, %{id: id}, _) do
-    IO.puts("toggle todo #{id}")
-    {:ok, []}
+    {:ok, Backend.Todo.toggle_task!(id)}
   end
 end

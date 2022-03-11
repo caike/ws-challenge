@@ -1,43 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./App.css";
 
-import { useTodosQuery } from "./hooks";
-
-import TaskGroupView from "./components/TaskGroupView";
 import TaskGroupList from "./components/TaskGroupList";
+import TaskGroupView from "./components/TaskGroupView";
+import { IconSad } from "./components/icons";
+
+import { AppStateProvider, useAppState } from "./contexts";
 
 const App = () => {
-  const { data, loading } = useTodosQuery();
-  const [taskGroupView, setTaskGroupView] = useState(null);
+  return (
+    <AppStateProvider>
+      <TodoApp />
+    </AppStateProvider>
+  );
+};
+
+const TodoApp = () => {
+  // taskGroupView is used as a simple way to navigate
+  // between the two different pages.
+  const { loading, error, taskGroupView } = useAppState();
+
+  if (error) {
+    return (
+      <h1 className="wait-status">
+        Something went wrong <IconSad />
+      </h1>
+    );
+  }
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <h1 className="wait-status">Loading...</h1>;
   }
-
-  const allTodos = (data && data.allTodos) || [];
-  let filteredTodos;
-
-  if (taskGroupView) {
-    filteredTodos = allTodos.filter((t) => t["group"] === taskGroupView);
-  }
-
-  const clearTaskGroupView = () => setTaskGroupView(null);
 
   return (
     <div className="container">
-      {taskGroupView ? (
-        <TaskGroupView
-          taskGroupView={taskGroupView}
-          filteredTodos={filteredTodos}
-          clearTaskGroupView={clearTaskGroupView}
-        />
-      ) : (
-        <TaskGroupList
-          allTodos={allTodos}
-          setTaskGroupView={setTaskGroupView}
-        />
-      )}
+      {taskGroupView ? <TaskGroupView /> : <TaskGroupList />}
     </div>
   );
 };

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useToggleTodoMutation } from "../hooks";
 
-const TaskGroupView = ({
-  taskGroupView,
-  clearTaskGroupView,
-  filteredTodos,
-}) => {
+import { useAppState } from "../contexts";
+
+const TaskGroupView = () => {
+  const { taskGroupView, clearTaskGroupView, filteredTodos } = useAppState();
+  const sortedFilteredTodos = filteredTodos.sort((t) => t["name"]);
+
   return (
     <div>
       <div className="title">
@@ -22,7 +23,7 @@ const TaskGroupView = ({
       </div>
 
       <ul className="task-items">
-        {filteredTodos.map((task, i) => (
+        {sortedFilteredTodos.map((task, i) => (
           <li key={task["group"] + task["name"]}>
             <TaskDetails task={task} />
           </li>
@@ -33,25 +34,19 @@ const TaskGroupView = ({
 };
 
 const TaskDetails = ({ task }) => {
-  const _isCompleted = !!task.completedAt;
   const hasDependency = !!task.hasDependency;
 
-  const [isCompleted, setIsCompleted] = useState(() => _isCompleted);
-
   if (hasDependency) {
-    return <LockedTask task={task} setIsCompleted={setIsCompleted} />;
+    return <LockedTask task={task} />;
   } else {
-    return (
-      <UnlockedTask
-        task={task}
-        isCompleted={isCompleted}
-        setIsCompleted={setIsCompleted}
-      />
-    );
+    return <UnlockedTask task={task} />;
   }
 };
 
-const UnlockedTask = ({ task, isCompleted, setIsCompleted }) => {
+const UnlockedTask = ({ task }) => {
+  const _isCompleted = !!task.completedAt;
+  const [isCompleted, setIsCompleted] = useState(() => _isCompleted);
+
   const [toggleTodo] = useToggleTodoMutation();
 
   const clickEvent = () => {
@@ -84,7 +79,7 @@ const UnlockedTask = ({ task, isCompleted, setIsCompleted }) => {
 
 const LockedTask = ({ task }) => {
   return (
-    <div className="task-detail">
+    <div className="is-locked task-detail">
       <img alt="Locked Task" src="locked.svg" width="20px" height="20px" />
 
       <div>{task["name"]}</div>

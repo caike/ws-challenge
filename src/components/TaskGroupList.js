@@ -1,4 +1,9 @@
-const TaskGroupList = ({ allTodos, setTaskGroupView }) => {
+import React from "react";
+import { useAppState } from "./../contexts";
+import { IconAlert, IconCheck } from "./icons";
+
+const TaskGroupList = () => {
+  const { allTodos, setTaskGroupView } = useAppState();
   const taskGroups = new Set(allTodos.map((t) => t["group"]));
 
   return (
@@ -25,9 +30,13 @@ const TaskGroupList = ({ allTodos, setTaskGroupView }) => {
   );
 };
 
-const TaskGroupItem = ({ group, items, setTaskGroupView }) => {
+const TaskGroupItem = ({ group, items }) => {
+  const { setTaskGroupView } = useAppState();
+
   const totalCount = items.length;
   const completedCount = items.filter((i) => !!i["completedAt"]).length;
+  const isCompleted = completedCount === totalCount;
+  const taskGroupIcon = isCompleted ? <IconCheck /> : <IconAlert />;
 
   return (
     <div className="group-item">
@@ -38,7 +47,7 @@ const TaskGroupItem = ({ group, items, setTaskGroupView }) => {
       <div>
         <h2 onClick={() => setTaskGroupView(group)}>{group}</h2>
         <span className="tasks-status">
-          {completedCount} of {totalCount} tasks completed
+          {completedCount} of {totalCount} tasks completed {taskGroupIcon}
         </span>
       </div>
     </div>
