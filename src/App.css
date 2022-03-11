@@ -1,5 +1,76 @@
-body {
-    padding: 10px;
+html, body {
     font-family: Arial, Helvetica, sans-serif;
     color: #333;
+}
+
+.container {
+    display : flex;
+    flex-direction: column;
+    margin: 100px auto;
+    padding: 10px;
+    outline: none;
+    width: 60%
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title > div, h2 {
+    cursor: pointer;
+}
+
+.solid {
+    border-top: 1px solid #ccc;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+ul li {
+    padding: 2.5em 0;
+    border-bottom: 1px solid #CCC;
+}
+
+ul li:first-child {
+    padding: 2.5em 0;
+    border-top: 1px solid #CCC;
+}
+
+.group-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.group-item img {
+    margin-right: 4em;
+}
+
+.group-item:first-child {
+    flex: 1;
+}
+
+.task-items li {
+    display: flex;
+}
+
+.task-items li img {
+    margin-right: 2em;
+}
+
+.tasks-status {
+    text-transform: uppercase;
+    color: rgb(140, 140, 140);
+}
+
+.group-item h2 {
+    margin-bottom: 5px;
 }

@@ -25,7 +25,7 @@ const App = () => {
   const clearTaskGroupView = () => setTaskGroupView(null);
 
   return (
-    <>
+    <div className="container">
       {taskGroupView ? (
         <TaskGroupView
           taskGroupView={taskGroupView}
@@ -38,7 +38,7 @@ const App = () => {
           setTaskGroupView={setTaskGroupView}
         />
       )}
-    </>
+    </div>
   );
 };
 
