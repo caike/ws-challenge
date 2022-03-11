@@ -19,14 +19,27 @@ defmodule Backend.Todo do
 
   @doc """
   Creates a Task by its attributes, including
-  the group to which it belongs to
+  the group to which it belongs to and the tasks it depends on
   """
   @spec create_task!(map()) :: Task.t()
   def create_task!(attrs) do
     %Task{}
     |> Task.create_changeset(attrs)
     |> Repo.insert!()
+    |> add_dependencies!(attrs)
   end
+
+  defp add_dependencies!(task, %{dependencies: deps}) when length(deps) > 0 do
+    dependencies = Enum.map(deps, &Repo.get_by(Task, name: &1.name))
+
+    task
+    |> Repo.preload(:dependencies)
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:dependencies, dependencies)
+    |> Repo.update!()
+  end
+
+  defp add_dependencies!(task, _), do: task
 
   @type resolver_task :: %Task{
           id: integer(),
@@ -44,11 +57,14 @@ defmodule Backend.Todo do
       from(t in Task,
         join: g in Group,
         on: g.id == t.group_id,
+        left_join: d in assoc(t, :dependencies),
+        group_by: [t.id, g.id],
         select: %{
           id: t.id,
           name: t.name,
           group: g.name,
-          completed_at: t.completed_at
+          completed_at: t.completed_at,
+          has_dependency: count(d.id) > 0
         }
       )
 

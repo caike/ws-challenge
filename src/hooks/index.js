@@ -6,6 +6,7 @@ const query = gql`
       id
       group
       name
+      hasDependency
       completedAt
     }
   }

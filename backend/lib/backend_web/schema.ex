@@ -5,6 +5,7 @@ defmodule BackendWeb.Schema do
     field(:id, non_null(:id))
     field(:group, non_null(:string))
     field(:name, non_null(:string))
+    field(:has_dependency, non_null(:boolean))
     field(:completed_at, :string)
   end
 
