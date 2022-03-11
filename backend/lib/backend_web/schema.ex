@@ -20,7 +20,7 @@ defmodule BackendWeb.Schema do
     @desc "Toggle todo"
     field :toggle_todo, non_null(:todo) do
       arg(:id, non_null(:id))
-      resolve(&toggle_todo/3)
+      resolve(&toggle_todo_resolver/3)
     end
   end
 
@@ -28,7 +28,7 @@ defmodule BackendWeb.Schema do
     {:ok, Backend.Todo.list_all_tasks()}
   end
 
-  defp toggle_todo(_, %{id: id}, _) do
+  defp toggle_todo_resolver(_, %{id: id}, _) do
     {:ok, Backend.Todo.toggle_task!(id)}
   end
 end

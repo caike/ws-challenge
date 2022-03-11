@@ -26,7 +26,21 @@ defmodule Backend.TaskTest do
       })
       |> Repo.insert!()
 
-    {:ok, completed_task: completed_task, incomplete_task: incomplete_task}
+    dependent_task =
+      Ecto.Changeset.change(%Task{}, %{
+        group_id: purchase_group.id,
+        name: "Buy hammer",
+        dependencies: [
+          incomplete_task
+        ],
+        completed_at: nil
+      })
+      |> Repo.insert!()
+
+    {:ok,
+     completed_task: completed_task,
+     incomplete_task: incomplete_task,
+     dependent_task: dependent_task}
   end
 
   test "incomplete task toggles to completed", %{incomplete_task: task} do
@@ -45,5 +59,53 @@ defmodule Backend.TaskTest do
 
     task = Todo.get_task!(task.id)
     refute task.completed_at
+  end
+
+  test "incomplete task with dependency raises error when toggle",
+       %{dependent_task: task} do
+    assert length(task.dependencies) == 1
+    [dep | _] = task.dependencies
+
+    refute dep.completed_at
+    refute task.completed_at
+
+    assert_raise RuntimeError, fn ->
+      Todo.toggle_task!(task.id)
+    end
+
+    refute task.completed_at
+  end
+
+  test "completed task with dependents toggles to incomplete and resets dependents", %{
+    incomplete_task: task1,
+    dependent_task: task2
+  } do
+    refute task1.completed_at
+    refute task2.completed_at
+
+    # Just to be sure that task2 depends
+    # on task1 being complete first
+    assert_raise RuntimeError, fn ->
+      Todo.toggle_task!(task2.id)
+    end
+
+    # Completes both
+    Todo.toggle_task!(task1.id)
+    Todo.toggle_task!(task2.id)
+
+    task1 = Todo.get_task!(task1.id)
+    task2 = Todo.get_task!(task2.id)
+
+    assert task1.completed_at
+    assert task2.completed_at
+
+    # Mark dependency as incomplete
+    Todo.toggle_task!(task1.id)
+
+    task1 = Todo.get_task!(task1.id)
+    refute task1.completed_at
+
+    task2 = Todo.get_task!(task2.id)
+    refute task2.completed_at
   end
 end
