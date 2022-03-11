@@ -16,7 +16,20 @@ defmodule BackendWeb.Schema do
     end
   end
 
+  mutation do
+    @desc "Toggle todo"
+    field :toggle_todo, non_null(:todo) do
+      arg(:id, non_null(:id))
+      resolve(&toggle_todo/3)
+    end
+  end
+
   defp all_tasks_resolver(_, _, _) do
     {:ok, Backend.Todo.list_all_tasks()}
+  end
+
+  defp toggle_todo(_, %{id: id}, _) do
+    IO.puts("toggle todo #{id}")
+    {:ok, []}
   end
 end
