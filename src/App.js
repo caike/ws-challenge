@@ -8,8 +8,12 @@ import TaskGroupView from "./components/TaskGroupView";
 import TaskGroupList from "./components/TaskGroupList";
 
 const App = () => {
-  const { data, loading } = useTodosQuery();
+  const { data, loading, error } = useTodosQuery();
   const [taskGroupView, setTaskGroupView] = useState(null);
+
+  if (error) {
+    return <h1>Something went wrong</h1>;
+  }
 
   if (loading) {
     return <h1>Loading...</h1>;

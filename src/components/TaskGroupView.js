@@ -10,15 +10,15 @@ const TaskGroupView = ({
       <div className="title">
         <h1>{taskGroupView}</h1>
         <div onClick={clearTaskGroupView}>
-          <img src="group.svg" width="20px" height="20px" />
+          <img alt="Task Group" src="group.svg" width="20px" height="20px" />
           <div>Back</div>
         </div>
       </div>
 
       <ul className="task-items">
-        {filteredTodos.map((task, i) => (
-          <li key={task["task"]}>
-            <TaskDetails task={task} />
+        {filteredTodos.map((todo, i) => (
+          <li key={todo["task"]}>
+            <TaskDetails task={todo} />
           </li>
         ))}
       </ul>
