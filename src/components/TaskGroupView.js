@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 const TaskGroupView = ({
   taskGroupView,
   clearTaskGroupView,
@@ -7,7 +9,10 @@ const TaskGroupView = ({
     <div>
       <div className="title">
         <h1>{taskGroupView}</h1>
-        <div onClick={clearTaskGroupView}>All Groups</div>
+        <div onClick={clearTaskGroupView}>
+          <img src="group.svg" width="20px" height="20px" />
+          <div>Back</div>
+        </div>
       </div>
 
       <ul className="task-items">
@@ -22,10 +27,14 @@ const TaskGroupView = ({
 };
 
 const TaskDetails = ({ task }) => {
-  const isCompleted = !!task.completedAt;
+  const _isCompleted = !!task.completedAt;
+  const [isCompleted, setIsCompleted] = useState(() => _isCompleted);
 
   return (
-    <>
+    <div
+      className="is-clickable task-detail"
+      onClick={() => setIsCompleted((v) => !v)}
+    >
       {isCompleted ? (
         <img
           alt="Completed task"
@@ -42,8 +51,8 @@ const TaskDetails = ({ task }) => {
         />
       )}
 
-      <div>{task["task"]}</div>
-    </>
+      <div className={isCompleted ? "is-completed" : ""}>{task["task"]}</div>
+    </div>
   );
 };
 
