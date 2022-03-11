@@ -10,14 +10,19 @@ const TaskGroupView = ({
       <div className="title">
         <h1>{taskGroupView}</h1>
         <div onClick={clearTaskGroupView}>
-          <img src="group.svg" width="20px" height="20px" />
+          <img
+            alt="Group of tasks"
+            src="group.svg"
+            width="20px"
+            height="20px"
+          />
           <div>Back</div>
         </div>
       </div>
 
       <ul className="task-items">
         {filteredTodos.map((task, i) => (
-          <li key={task["task"]}>
+          <li key={task["group"] + task["name"]}>
             <TaskDetails task={task} />
           </li>
         ))}
@@ -51,7 +56,7 @@ const TaskDetails = ({ task }) => {
         />
       )}
 
-      <div className={isCompleted ? "is-completed" : ""}>{task["task"]}</div>
+      <div className={isCompleted ? "is-completed" : ""}>{task["name"]}</div>
     </div>
   );
 };

@@ -5,10 +5,7 @@ const query = gql`
     allTodos {
       id
       group
-      task
-      dependencies {
-        id
-      }
+      name
       completedAt
     }
   }
