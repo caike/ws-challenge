@@ -5,6 +5,8 @@ defmodule Backend.Todo.Dependency do
   use Ecto.Schema
   alias Backend.Todo.Task
 
+  @type t :: %__MODULE__{}
+
   @primary_key false
   schema "dependencies" do
     belongs_to(:task, Task)

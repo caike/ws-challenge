@@ -105,3 +105,14 @@ ul li:first-child {
     color: #ccc;
     text-decoration: line-through;
 }
+
+.wait-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.wait-status svg {
+    margin-left: 10px;
+}

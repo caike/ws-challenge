@@ -10,8 +10,10 @@ defmodule Backend.Todo.Group do
     :name
   ]
 
+  @type t :: %__MODULE__{}
+
   schema "groups" do
-    field :name, :string
+    field(:name, :string)
 
     timestamps()
   end

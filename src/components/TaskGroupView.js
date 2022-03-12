@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useToggleTodoMutation } from "../hooks";
 
-const TaskGroupView = ({
-  taskGroupView,
-  clearTaskGroupView,
-  filteredTodos,
-}) => {
+import { useAppState } from "../contexts";
+
+const TaskGroupView = () => {
+  const { taskGroupView, clearTaskGroupView, filteredTodos } = useAppState();
+  const sortedTodos = filteredTodos.sort((a, b) =>
+    a["task"].localeCompare(b["task"])
+  );
+
   return (
     <div>
       <div className="title">
@@ -17,7 +20,7 @@ const TaskGroupView = ({
       </div>
 
       <ul className="task-items">
-        {filteredTodos.map((todo, i) => (
+        {sortedTodos.map((todo, i) => (
           <li key={todo["task"]}>
             <TaskDetails task={todo} />
           </li>

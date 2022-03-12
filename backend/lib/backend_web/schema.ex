@@ -14,7 +14,7 @@ defmodule BackendWeb.Schema do
 
   mutation do
     @desc "Toggle todo"
-    field :toggle_todo, :id do
+    field :toggle_todo, non_null(:todo) do
       arg(:id, non_null(:id))
       resolve(&Resolvers.Todo.toggle_task_resolver/3)
     end

@@ -21,7 +21,7 @@ defmodule BackendWeb.Schema.TodoTypes do
     field(:dependencies, non_null(list_of(:todo))) do
       resolve(fn task, _, _ ->
         batch(
-          {Resolvers.Todo, :dependencies_by_task_ids},
+          {Resolvers.Todo, :incomplete_dependencies_by_task_ids},
           task.id,
           Resolvers.Todo.dependency_from_batch(task.id)
         )

@@ -16,7 +16,9 @@ const query = gql`
 
 const mutation = gql`
   mutation ToggleTodo($id: ID!) {
-    toggleTodo(id: $id)
+    toggleTodo(id: $id) {
+      id
+    }
   }
 `;
 
@@ -25,7 +27,7 @@ const useTodosQuery = () => {
 };
 
 const useToggleTodoMutation = () => {
-  return useMutation(mutation);
+  return useMutation(mutation, { refetchQueries: [{ query }] });
 };
 
 export { useTodosQuery, useToggleTodoMutation };
