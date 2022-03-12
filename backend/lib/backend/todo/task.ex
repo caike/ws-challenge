@@ -13,10 +13,18 @@ defmodule Backend.Todo.Task do
   ]
 
   schema "tasks" do
-    field :name, :string
-    field :completed_at, :naive_datetime
+    field(:name, :string)
+    field(:completed_at, :naive_datetime)
 
-    belongs_to :group, Backend.Todo.Group
+    belongs_to(:group, Backend.Todo.Group)
+
+    many_to_many(
+      :dependencies,
+      __MODULE__,
+      join_through: Backend.Todo.Dependency,
+      join_keys: [task_id: :id, dependency_task_id: :id],
+      where: [completed_at: nil]
+    )
 
     timestamps()
   end

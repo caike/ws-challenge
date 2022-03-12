@@ -1,6 +1,6 @@
 defmodule Backend.Todo do
   alias Backend.Repo
-  alias Backend.Todo.{Group, Task}
+  alias Backend.Todo.{Group, Task, Dependency}
 
   import Ecto.Query
 
@@ -14,22 +14,23 @@ defmodule Backend.Todo do
     %Task{}
     |> Task.create_changeset(attrs)
     |> Repo.insert!()
+    |> add_dependencies!(attrs)
   end
 
-  def list_all_tasks do
-    query =
-      from(t in Task,
-        join: g in Group,
-        on: g.id == t.group_id,
-        select: %{
-          id: t.id,
-          group: g.name,
-          task: t.name,
-          dependencies: [],
-          completed_at: t.completed_at
-        }
-      )
+  defp add_dependencies!(task, %{dependencies: deps}) when length(deps) > 0 do
+    dependencies = Enum.map(deps, &Repo.get_by(Task, name: &1.name))
 
-    Repo.all(query)
+    task
+    |> Repo.preload(:dependencies)
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:dependencies, dependencies)
+    |> Repo.update!()
+  end
+
+  defp add_dependencies!(task, _), do: task
+
+  def list_all_tasks do
+    Task
+    |> Repo.all()
   end
 end
