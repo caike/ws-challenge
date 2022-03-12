@@ -27,6 +27,16 @@ const TaskGroupView = ({
 };
 
 const TaskDetails = ({ task }) => {
+  const hasDependency = (task.dependencies || []).length > 0;
+
+  if (hasDependency) {
+    return <LockedTask task={task} />;
+  } else {
+    return <UnlockedTask task={task} />;
+  }
+};
+
+const UnlockedTask = ({ task }) => {
   const _isCompleted = !!task.completedAt;
   const [isCompleted, setIsCompleted] = useState(() => _isCompleted);
 
@@ -52,6 +62,16 @@ const TaskDetails = ({ task }) => {
       )}
 
       <div className={isCompleted ? "is-completed" : ""}>{task["task"]}</div>
+    </div>
+  );
+};
+
+const LockedTask = ({ task }) => {
+  return (
+    <div className="task-detail">
+      <img alt="Locked task" src="locked.svg" width="20px" height="20px" />
+
+      <div>{task["task"]}</div>
     </div>
   );
 };
