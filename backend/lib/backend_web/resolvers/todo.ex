@@ -12,6 +12,11 @@ defmodule BackendWeb.Resolvers.Todo do
     {:ok, Todo.list_all_tasks()}
   end
 
+  def toggle_task_resolver(_, %{id: id}, _) do
+    IO.inspect(id, label: "toggle todos")
+    {:ok, []}
+  end
+
   def groups_by_id(_, ids) do
     ids = ids |> Enum.uniq()
 

@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 
 const query = gql`
   query {
@@ -14,8 +14,18 @@ const query = gql`
   }
 `;
 
+const mutation = gql`
+  mutation ToggleTodo($id: ID!) {
+    toggleTodo(id: $id)
+  }
+`;
+
 const useTodosQuery = () => {
   return useQuery(query);
 };
 
-export { useTodosQuery };
+const useToggleTodoMutation = () => {
+  return useMutation(mutation);
+};
+
+export { useTodosQuery, useToggleTodoMutation };

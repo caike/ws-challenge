@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useToggleTodoMutation } from "../hooks";
 
 const TaskGroupView = ({
   taskGroupView,
@@ -40,11 +41,15 @@ const UnlockedTask = ({ task }) => {
   const _isCompleted = !!task.completedAt;
   const [isCompleted, setIsCompleted] = useState(() => _isCompleted);
 
+  const [toggleTodo] = useToggleTodoMutation();
+
+  const clickEvent = () => {
+    setIsCompleted((v) => !v);
+    toggleTodo({ variables: { id: task.id } });
+  };
+
   return (
-    <div
-      className="is-clickable task-detail"
-      onClick={() => setIsCompleted((v) => !v)}
-    >
+    <div className="is-clickable task-detail" onClick={clickEvent}>
       {isCompleted ? (
         <img
           alt="Completed task"
