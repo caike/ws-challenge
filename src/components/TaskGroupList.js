@@ -19,7 +19,7 @@ const TaskGroupList = () => {
             (todo) => group === todo["group"]
           );
           return (
-            <li key={group}>
+            <li className="is-clickable" key={group}>
               <TaskGroupItem group={group} items={groupedItems} />
             </li>
           );

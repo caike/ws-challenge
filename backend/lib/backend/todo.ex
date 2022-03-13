@@ -1,4 +1,9 @@
 defmodule Backend.Todo do
+  @moduledoc """
+  Context module for operations on the Todo list
+  regarding Group, Task and Dependencies
+  """
+
   alias Backend.Repo
   alias Backend.Todo.{Group, Task, Dependency}
 
@@ -49,15 +54,10 @@ defmodule Backend.Todo do
         is_nil(dep.completed_at),
         do: raise("Must complete dependency first")
 
-    # Reset completed_dependents when
-    # dependency is marked as incomplete
-    task =
-      task
-      |> Repo.preload(:completed_dependents)
-
     Backend.Repo.transaction(fn ->
-      for dependent <- task.completed_dependents,
-          do: dependent |> Task.create_toggle_changeset() |> Repo.update!()
+      # Reset completed_dependents when
+      # dependency is marked as incomplete
+      reset_completed_dependents(task)
 
       task
       |> Task.create_toggle_changeset()
@@ -65,6 +65,29 @@ defmodule Backend.Todo do
     end)
 
     task
+  end
+
+  defp reset_completed_dependents(task) do
+    task =
+      task
+      |> Repo.preload(:completed_dependents)
+
+    do_reset_completed_dependents(task, task.completed_dependents)
+  end
+
+  defp do_reset_completed_dependents(task, completed_dependents) do
+    for dependent <- completed_dependents do
+      dependent =
+        dependent
+        |> Task.create_toggle_changeset()
+        |> Repo.update!()
+
+      dependent =
+        dependent
+        |> Repo.preload(:completed_dependents)
+
+      do_reset_completed_dependents(dependent, dependent.completed_dependents)
+    end
   end
 
   @spec get_task!(integer()) :: Task.t()

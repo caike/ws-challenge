@@ -27,6 +27,14 @@ html, body {
     cursor: pointer;
 }
 
+.is-clickable :hover {
+    color: #999;
+}
+
+.is-locked {
+    cursor: not-allowed;
+}
+
 .title > div {
     margin-left: 10%;
     margin-top: 1%;

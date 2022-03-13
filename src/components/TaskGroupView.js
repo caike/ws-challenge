@@ -76,7 +76,7 @@ const UnlockedTask = ({ task }) => {
 
 const LockedTask = ({ task }) => {
   return (
-    <div className="task-detail">
+    <div className="task-detail is-locked">
       <img alt="Locked task" src="locked.svg" width="20px" height="20px" />
 
       <div>{task["task"]}</div>
