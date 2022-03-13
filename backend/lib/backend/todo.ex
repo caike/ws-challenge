@@ -39,9 +39,32 @@ defmodule Backend.Todo do
 
   @spec toggle_task!(integer()) :: Task.t()
   def toggle_task!(id) do
-    get_task!(id)
-    |> Task.create_toggle_changeset()
-    |> Repo.update!()
+    task =
+      get_task!(id)
+      |> Repo.preload(:dependencies)
+
+    # Raise error if any of the dependencies
+    # have not been completed
+    for dep <- task.dependencies,
+        is_nil(dep.completed_at),
+        do: raise("Must complete dependency first")
+
+    # Reset completed_dependents when
+    # dependency is marked as incomplete
+    task =
+      task
+      |> Repo.preload(:completed_dependents)
+
+    Backend.Repo.transaction(fn ->
+      for dependent <- task.completed_dependents,
+          do: dependent |> Task.create_toggle_changeset() |> Repo.update!()
+
+      task
+      |> Task.create_toggle_changeset()
+      |> Repo.update!()
+    end)
+
+    task
   end
 
   @spec get_task!(integer()) :: Task.t()

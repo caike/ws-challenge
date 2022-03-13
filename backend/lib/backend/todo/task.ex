@@ -27,6 +27,14 @@ defmodule Backend.Todo.Task do
       join_keys: [task_id: :id, dependency_task_id: :id]
     )
 
+    many_to_many(
+      :completed_dependents,
+      __MODULE__,
+      join_through: Backend.Todo.Dependency,
+      join_keys: [dependency_task_id: :id, task_id: :id],
+      where: [completed_at: {:not, nil}]
+    )
+
     timestamps()
   end
 
