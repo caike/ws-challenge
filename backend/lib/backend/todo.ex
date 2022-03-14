@@ -72,10 +72,10 @@ defmodule Backend.Todo do
       task
       |> Repo.preload(:completed_dependents)
 
-    do_reset_completed_dependents(task, task.completed_dependents)
+    do_reset_completed_dependents(task.completed_dependents)
   end
 
-  defp do_reset_completed_dependents(task, completed_dependents) do
+  defp do_reset_completed_dependents(completed_dependents) do
     for dependent <- completed_dependents do
       dependent =
         dependent
@@ -86,7 +86,7 @@ defmodule Backend.Todo do
         dependent
         |> Repo.preload(:completed_dependents)
 
-      do_reset_completed_dependents(dependent, dependent.completed_dependents)
+      do_reset_completed_dependents(dependent.completed_dependents)
     end
   end
 
