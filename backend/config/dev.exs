@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :backend, Backend.Repo,
@@ -16,6 +16,7 @@ config :backend, Backend.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :backend, BackendWeb.Endpoint,
+  server: true,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,

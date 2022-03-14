@@ -1,30 +1,44 @@
-import React from 'react'
-import { gql, useQuery} from '@apollo/client'
+import React from "react";
 
-const query = gql`
-query {
-  allTodos {
-    id
-    group
-    task
-    dependencies {
-      id
-    }
-    completedAt
-  }
-}
-`
+import "./App.css";
+
+import TaskGroupView from "./components/TaskGroupView";
+import TaskGroupList from "./components/TaskGroupList";
+
+import { IconSad } from "./components/icons";
+
+import { AppStateProvider, useAppState } from "./contexts";
 
 const App = () => {
-  const {data} = useQuery(query)
+  return (
+    <AppStateProvider>
+      <TodoApp />
+    </AppStateProvider>
+  );
+};
 
-  const count = (data && data.allTodos) ? data.allTodos.length : 0
+const TodoApp = () => {
+  // taskGroupView is used as a simple way to navigate
+  // between the two different pages.
+  const { loading, error, taskGroupView } = useAppState();
+
+  if (error) {
+    return (
+      <h1 className="wait-status">
+        Something went wrong <IconSad />
+      </h1>
+    );
+  }
+
+  if (loading) {
+    return <h1 className="wait-status">Loading...</h1>;
+  }
 
   return (
-    <React.Fragment>
-      <h1>Hello world, you have {count} things to do</h1>
-    </React.Fragment>
-  )
-}
+    <div className="container">
+      {taskGroupView ? <TaskGroupView /> : <TaskGroupList />}
+    </div>
+  );
+};
 
-export default App
+export default App;
