@@ -1,5 +1,15 @@
 # Wonderschool Coding Challenge
 
+## How to run this code submission
+
+1. Check the `.tool-versions` file on the backend folder for the expected Elixir/Erlang runtime versions. If using asdf, run `asdf install` to install them.
+2. Still on the backend folder, run `mix deps.get` do install dependencies, `mix ecto.setup` to create the db, run migrations and insert seed data. Finally, start the backend server with `iex -S mix` or `mix phx.server`.
+3. On the root folder, run `yarn install` and `yarn start`.
+4. Access the app at http://localhost:3000 and it should look like so:
+
+![todo](docs/todo.gif)
+
+
 ## Introduction
 
 Thanks for your interest in joining the Wonderschool engineering team! Before we proceed with more
