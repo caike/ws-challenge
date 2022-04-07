@@ -2,6 +2,13 @@
 
 ## How to run this code submission
 
+There are two ways to run this code locally:
+
+1- Installing runtimes natively  
+2- Using Docker
+
+### Installing runtimes natively
+
 1. Check the `.tool-versions` file on the backend folder for the expected Elixir/Erlang runtime versions. If using asdf, run `asdf install` to install them.
 2. Still on the backend folder, run `mix deps.get` do install dependencies, `mix ecto.setup` to create the db, run migrations and insert seed data. Finally, start the backend server with `iex -S mix` or `mix phx.server`.
 3. On the root folder, run `yarn install` and `yarn start`.
@@ -9,19 +16,16 @@
 
 ![todo](docs/todo.gif)
 
+### Using Docker
 
-## Introduction
+First, make sure no other services are running locally on ports **3000** or **4000**.
 
-Thanks for your interest in joining the Wonderschool engineering team! Before we proceed with more
-formal interviews, we ask that all candidates submit a coding challenge. The coding challenge is
-a foundational piece of our process and it's referenced later in our process during the technical 
-interviews.
+With Docker running, run the following commands from the root folder of this project:
 
-For an experienced full stack developer, the coding challenge should not take longer than **2-4 hours** to 
-complete.
+1- `make build`  
+1- `make up`
 
-If at any point you have questions concerning the coding challenge and/or interview process, please
-do not hesitate to email engineering@wonderschool.com.
+That's it!
 
 ## Coding Challenge
 

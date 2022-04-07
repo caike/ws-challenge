@@ -1,0 +1,14 @@
+.git
+.log
+tmp
+
+# Mix artifacts
+backend/_build
+backend/deps
+backend/*.ez
+
+backend/erl_crash.dump
+
+# Static artifacts
+**/node_modules
+**/priv
