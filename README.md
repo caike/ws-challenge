@@ -1,6 +1,6 @@
-# Wonderschool Coding Challenge
+# Coding Challenge
 
-## How to run this code submission
+## How to run this code
 
 There are two ways to run this code locally:
 
@@ -9,9 +9,9 @@ There are two ways to run this code locally:
 
 ### Installing runtimes natively
 
-1. Check the `.tool-versions` file on the backend folder for the expected Elixir/Erlang runtime versions. If using asdf, run `asdf install` to install them.
-2. Still on the backend folder, run `mix deps.get` do install dependencies, `mix ecto.setup` to create the db, run migrations and insert seed data. Finally, start the backend server with `iex -S mix` or `mix phx.server`.
-3. On the root folder, run `yarn install` and `yarn start`.
+1. On the _backend_ folder, check the `.tool-versions` file. This file lists suggested Elixir/Erlang runtime versions. If using `asdf` to manage versions (highly recommeded), then run `asdf install` inside this folder to install them.  
+2. Still on the _backend_ folder, run `mix deps.get` do install dependencies, `mix ecto.setup` to create the db, run migrations and insert seed data. Finally, start the backend server with `iex -S mix` or `mix phx.server`. No need to worry about Node.js since this app is strictly API and will not be serving static assets.
+3. Open a new terminal tab, and on _frontend_ folder of the project run `yarn install` and `yarn start`.
 4. Access the app at http://localhost:3000 and it should look like so:
 
 ![todo](docs/todo.gif)
@@ -25,7 +25,8 @@ With Docker running, run the following commands from the root folder of this pro
 1- `make build`  
 1- `make up`
 
-That's it!
+Wait a few minutes until all three services are up (postgres, backend and frontend) and visit http://localhost:3000
+
 
 ## Coding Challenge
 
@@ -103,24 +104,6 @@ yarn start
 
 At this point, the app should be running in development mode and any local modifications you make
 will be automatically detected and result in the app to reload.
-
-## Submission
-
-To submit your coding challenge, commit all your changes to the `master` branch and run the 
-following commands:
-
-```
-# Make sure all changes were committed
-git diff-index --quiet HEAD -- || echo 'You have uncommitted changes!'
-
-# Create bundle to submit
-git bundle create coding-challenge.bundle HEAD master
-```
-
-Email the generated _coding-challenge.bundle_ file to engineering@wonderschool.com. We do our 
-best to review and respond to submissions within 1-2 business days.
-
-Thanks for taking the time to do this coding challenge and here's hoping we talk soon!
 
 ## Things to note
 
