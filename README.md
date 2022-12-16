@@ -2,30 +2,20 @@
 
 ## How to run this code
 
-There are two ways to run this code locally:
+1. Let's start by installing the supported language versions. If using `asdf` to manage versions (highly recommeded), then run `asdf install` inside the root folder of this project to install Erlang, Elixir and NodeJS. If not using `asdf`, then check for the supported versions on the `.tool-versions` file and install them accordingly.
 
-1- Installing runtimes natively  
-2- Using Docker
+2. Make sure PostgreSQL is running locally and accepting connections with credentials for `username: "postgres", password: "postgres"`. If that's not the case, then make sure to update `config/dev.exs` with the proper access credentials.
 
-### Installing runtimes natively
+3. Enter the _backend_ folder and run `mix deps.get` to install dependencies. Then, run `mix ecto.setup` to compile the project, create the database, run migrations and insert seed data.
 
-1. On the _backend_ folder, check the `.tool-versions` file. This file lists suggested Elixir/Erlang runtime versions. If using `asdf` to manage versions (highly recommeded), then run `asdf install` inside this folder to install them.  
-2. Still on the _backend_ folder, run `mix deps.get` do install dependencies, `mix ecto.setup` to create the db, run migrations and insert seed data. Finally, start the backend server with `iex -S mix` or `mix phx.server`. No need to worry about Node.js since this app is strictly API and will not be serving static assets.
-3. Open a new terminal tab, and on _frontend_ folder of the project run `yarn install` and `yarn start`.
-4. Access the app at http://localhost:3000 and it should look like so:
+4. Start the backend server with `iex -S mix` or `mix phx.server`. No need to worry about the Node.js error since this app is strictly API and will not be serving static assets.
+
+5. Open a new terminal tab, go to the _frontend_ folder. Run `npm install` to install the frontend dependencies and then `npm start` to spin up the front-end app.
+
+5. Access the app at http://localhost:3000 and it should look like so:
+
 
 ![todo](docs/todo.gif)
-
-### Using Docker
-
-First, make sure no other services are running locally on ports **3000** or **4000**.
-
-With Docker running, run the following commands from the root folder of this project:
-
-1- `make build`  
-1- `make up`
-
-Wait a few minutes until all three services are up (postgres, backend and frontend) and visit http://localhost:3000
 
 
 ## Coding Challenge
